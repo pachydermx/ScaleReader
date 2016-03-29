@@ -2,7 +2,7 @@ from pyimagesearch import imutils
 from skimage import exposure
 import numpy as np
 import cv2
-import numberrec
+from numberrec import NumberRecognizer
 
 class ScaleReader:
     def onMouseClick(self, event, x, y, flags, param):
@@ -90,24 +90,45 @@ class ScaleReader:
         #cv2.imshow("THRES", self.thrimg)
 
         # wait
-        cv2.waitKey(0)
+        #cv2.waitKey(0)
 
     def recognize_block(self, args):
         x0 = args[0]
         x1 = args[1]
-        y0 = args[0]
-        y1 = args[1]
+        y0 = args[2]
+        y1 = args[3]
         cropped_img_ath = self.athrimg[y0:y1, x0:x1]
         cropped_img_th = self.thrimg[y0:y1, x0:x1]
         mean_ath, _, _, _ = cv2.mean(cropped_img_ath)
         mean_th, _, _, _ = cv2.mean(cropped_img_th)
         mean = (mean_ath + mean_th) / 2
-        print "[" , self.start[0] , "," , self.end[0], ",", self.start[1], ",", self.end[1] , "], "
+        #print "[" , self.start[0] , "," , self.end[0], ",", self.start[1], ",", self.end[1] , "], "
         if mean < 200:
             return True
         else:
             return False
         #cv2.imshow("cropped", cropped_img_ath)
+
+    def recognize_number(self, frames):
+        # recognize blocks
+        bool_block = []
+        for index in range(len(frames)):
+            bool_block.append([])
+            for block_index in range(len(frames[index])):
+                bool_block[index].append(self.recognize_block(frames[index][block_index]))
+        # recognize numbers
+        result = 0
+        for index in range(len(bool_block)):
+            nr =  NumberRecognizer(bool_block[index])
+            recognized_number = nr.recoginze()
+            if recognized_number < 0:
+                print "Unkown number"
+            else:
+                result += recognized_number
+                result *= 10
+        result /= 10
+        print result
+
 
     def init_frame(self):
         self.number_frame = [
@@ -131,9 +152,9 @@ class ScaleReader:
         ]
 
     def __init__(self):
-        
         self.init_frame()
         self.init_image()
+        self.recognize_number(self.number_frame)
 
 
 sr = ScaleReader()

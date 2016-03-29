@@ -1,7 +1,7 @@
 
 class NumberRecognizer:
-    def __init__(self, top, upleft, upright, middle, downleft, downright, bottom):
-        self.input_parts = [top , upleft, upright, middle, downleft, downright, bottom]
+    def __init__(self, args):
+        self.input_parts = args
         self.dic = {
             0:[True, True, True, False, True, True, True],
             1:[False, False, True, False, False, True, False],
