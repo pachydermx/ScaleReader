@@ -5,22 +5,16 @@ import cv2
 import numberrec
 
 class ScaleReader:
-
     def onMouseClick(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
             self.start = [x, y]
 
         if event == cv2.EVENT_LBUTTONUP:
             self.end = [x, y]
-            cropped_img_ath = self.athrimg[self.start[1]:self.end[1], self.start[0]:self.end[0]]
-            cropped_img_th = self.thrimg[self.start[1]:self.end[1], self.start[0]:self.end[0]]
-            mean_ath, _, _, _ = cv2.mean(cropped_img_ath)
-            mean_th, _, _, _ = cv2.mean(cropped_img_th)
-            mean = (mean_ath + mean_th) / 2
-            cv2.imshow("cropped", cropped_img_ath)
-            print self.start, self.end, mean
+            test =self.recognize_block(self.start[0], self.end[0], self.start[1], self.end[1])
+            #print test
 
-    def __init__(self):
+    def init_image(self):
         image = cv2.imread("test.jpg")
         ratio = image.shape[0] / 600.0
         orig = image.copy()
@@ -97,6 +91,49 @@ class ScaleReader:
 
         # wait
         cv2.waitKey(0)
+
+    def recognize_block(self, args):
+        x0 = args[0]
+        x1 = args[1]
+        y0 = args[0]
+        y1 = args[1]
+        cropped_img_ath = self.athrimg[y0:y1, x0:x1]
+        cropped_img_th = self.thrimg[y0:y1, x0:x1]
+        mean_ath, _, _, _ = cv2.mean(cropped_img_ath)
+        mean_th, _, _, _ = cv2.mean(cropped_img_th)
+        mean = (mean_ath + mean_th) / 2
+        print "[" , self.start[0] , "," , self.end[0], ",", self.start[1], ",", self.end[1] , "], "
+        if mean < 200:
+            return True
+        else:
+            return False
+        #cv2.imshow("cropped", cropped_img_ath)
+
+    def init_frame(self):
+        self.number_frame = [
+            [
+                [355, 414, 194, 221],
+                [331, 354, 222, 296],
+                [418, 438, 227, 301],
+                [357, 411, 311, 329],
+                [329, 349, 343, 421],
+                [413, 432, 346, 418],
+                [348, 412, 425, 447]
+            ],[
+                [488, 550, 198, 222],
+                [469, 492, 227, 300],
+                [553, 577, 227, 304],
+                [494, 547, 315, 332],
+                [467, 484, 343, 421],
+                [550, 569, 348, 418],
+                [548, 498, 431, 451]
+            ]
+        ]
+
+    def __init__(self):
+        
+        self.init_frame()
+        self.init_image()
 
 
 sr = ScaleReader()
