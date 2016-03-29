@@ -12,9 +12,12 @@ class ScaleReader:
 
         if event == cv2.EVENT_LBUTTONUP:
             self.end = [x, y]
-            cropped_img = self.thrimg[self.start[1]:self.end[1], self.start[0]:self.end[0]]
-            mean, _, _, _ = cv2.mean(cropped_img)
-            cv2.imshow("cropped", cropped_img)
+            cropped_img_ath = self.athrimg[self.start[1]:self.end[1], self.start[0]:self.end[0]]
+            cropped_img_th = self.thrimg[self.start[1]:self.end[1], self.start[0]:self.end[0]]
+            mean_ath, _, _, _ = cv2.mean(cropped_img_ath)
+            mean_th, _, _, _ = cv2.mean(cropped_img_th)
+            mean = (mean_ath + mean_th) / 2
+            cv2.imshow("cropped", cropped_img_ath)
             print self.start, self.end, mean
 
     def __init__(self):
@@ -82,14 +85,16 @@ class ScaleReader:
         gray = cv2.cvtColor(warp, cv2.COLOR_BGR2GRAY)
         gray = cv2.bilateralFilter(gray, 17, 17, 17)
 
-        thresholded = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+        athresholded = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+        ret, thresholded = cv2.threshold(gray,60, 255, cv2.THRESH_BINARY)
         cv2.namedWindow("Grayscale")
         cv2.setMouseCallback("Grayscale", self.onMouseClick)
 
+        self.athrimg = athresholded.copy()
         self.thrimg = thresholded.copy()
-        cv2.imshow("Grayscale", self.thrimg)
+        cv2.imshow("Grayscale", self.athrimg)
+        #cv2.imshow("THRES", self.thrimg)
 
-        print cv2.mean(thresholded)
         # wait
         cv2.waitKey(0)
 
