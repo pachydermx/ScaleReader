@@ -12,7 +12,10 @@ class ScaleReader:
 
         if event == cv2.EVENT_LBUTTONUP:
             self.end = [x, y]
-            print self.start, self.end
+            cropped_img = self.thrimg[self.start[1]:self.end[1], self.start[0]:self.end[0]]
+            mean, _, _, _ = cv2.mean(cropped_img)
+            cv2.imshow("cropped", cropped_img)
+            print self.start, self.end, mean
 
     def __init__(self):
         image = cv2.imread("test.jpg")
@@ -82,7 +85,9 @@ class ScaleReader:
         thresholded = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
         cv2.namedWindow("Grayscale")
         cv2.setMouseCallback("Grayscale", self.onMouseClick)
-        cv2.imshow("Grayscale", thresholded)
+
+        self.thrimg = thresholded.copy()
+        cv2.imshow("Grayscale", self.thrimg)
 
         print cv2.mean(thresholded)
         # wait
