@@ -10,7 +10,7 @@ class NumberRecognizer:
             4:[False, True, True, True, False, True, False],
             5:[True, True, False, True, False, True, True],
             6:[True, True, False, True, True, True, True],
-            7:[True, False, False, False, False, True, True],
+            7:[True, True, True, False, False, True, False],
             8:[True, True, True, True, True, True, True],
             9:[True, True, True, True, False, True, True]
         }
