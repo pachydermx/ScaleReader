@@ -21,12 +21,13 @@ class ScaleReader:
         cap = cv2.VideoCapture('test.avi')
         while cap.isOpened():
             ret, frame = cap.read()
-            frame = cv2.resize(frame, (720, 480))
-            cv2.imshow("Video Input", frame)
+            #frame = cv2.resize(frame, (720, 480))
+            #cv2.imshow("Video Input", frame)
 
             self.init_image(frame)
 
-            k = cv2.waitKey(1)
+            k = cv2.waitKey(self.wait)
+            self.wait = 1
 
     def onMouseClick(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
@@ -41,13 +42,13 @@ class ScaleReader:
     def init_image(self, image):
         ratio = image.shape[0] / 600.0
         orig = image.copy()
-        #image = imutils.resize(image, height = 600)
+        image = imutils.resize(image, height = 600)
 
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         gray = cv2.bilateralFilter(gray, 11, 17, 17)
         edged = cv2.Canny(gray, 30, 200)
 
-        cv2.imshow("Edged", edged)
+        #cv2.imshow("Edged", edged)
 
         _, cnts, _ = cv2.findContours(edged.copy(), cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         cnts = sorted(cnts, key = cv2.contourArea, reverse = True)[:10]
@@ -61,9 +62,9 @@ class ScaleReader:
                 screenCnt = approx
                 break
 
-        if screenCnt != None and False:
+        if screenCnt != None:
             cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 3)
-            #cv2.imshow("Gameboy screen", image)
+            cv2.imshow("Edged", image)
 
             pts = screenCnt.reshape(4, 2)
             rect = np.zeros((4, 2), dtype = "float32")
@@ -95,26 +96,31 @@ class ScaleReader:
                 [0, maxHeight - 1]
             ], dtype = "float32")
 
-            M = cv2.getPerspectiveTransform(rect, dst)
-            warp = cv2.warpPerspective(orig, M, (maxWidth, maxHeight))
 
-            #cv2.imshow("Warp", warp)
+            if self.check_screen(maxWidth, maxHeight):
+                print maxWidth, maxHeight
 
-            gray = cv2.cvtColor(warp, cv2.COLOR_BGR2GRAY)
-            gray = cv2.bilateralFilter(gray, 17, 17, 17)
+                M = cv2.getPerspectiveTransform(rect, dst)
+                warp = cv2.warpPerspective(orig, M, (maxWidth, maxHeight))
 
-            athresholded = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
-            ret, thresholded = cv2.threshold(gray,60, 255, cv2.THRESH_BINARY)
-            cv2.namedWindow("Grayscale")
-            cv2.setMouseCallback("Grayscale", self.onMouseClick)
+                cv2.imshow("Warp", warp)
 
-            self.athrimg = athresholded.copy()
-            self.thrimg = thresholded.copy()
-            cv2.imshow("Grayscale", self.athrimg)
-            #cv2.imshow("THRES", self.thrimg)
+                gray = cv2.cvtColor(warp, cv2.COLOR_BGR2GRAY)
+                gray = cv2.bilateralFilter(gray, 17, 17, 17)
 
-            # wait
-            #cv2.waitKey(0)
+                athresholded = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
+                ret, thresholded = cv2.threshold(gray,60, 255, cv2.THRESH_BINARY)
+                cv2.namedWindow("Grayscale")
+                cv2.setMouseCallback("Grayscale", self.onMouseClick)
+
+                self.athrimg = athresholded.copy()
+                self.thrimg = thresholded.copy()
+                cv2.imshow("Grayscale", self.athrimg)
+                self.wait = 0
+                #cv2.imshow("THRES", self.thrimg)
+
+                # wait
+                #cv2.waitKey(0)
 
     def recognize_block(self, args):
         x0 = args[0]
@@ -152,7 +158,21 @@ class ScaleReader:
         result /= 10
         print result
 
+    def check_screen(self, width, height):
+        if width != 0 and height != 0:
+            ratio = float(width) / height
+            delta = ratio - self.screen_ratio
+            delta_abs = abs(delta)
+            print delta_abs
+            if delta_abs < 0.1:
+                return True
+            else:
+                return False
+        else :
+            return False
+
     def init_frame(self):
+        self.screen_ratio = 1.32
         self.number_frame = [
             [
                 [355, 414, 194, 221],
@@ -174,6 +194,7 @@ class ScaleReader:
         ]
 
     def __init__(self):
+        self.wait = 1;
         image = cv2.imread("test.jpg")
         self.init_frame()
         self.getImageFromVideo()
