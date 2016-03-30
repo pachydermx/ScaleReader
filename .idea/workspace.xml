@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="5232c8f6-cf1d-413e-a7a7-efef4b23cb30" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/numberrec.py" afterPath="$PROJECT_DIR$/numberrec.py" />
     </list>
     <ignored path="ScaleReader.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -17,7 +16,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/ScaleReader$main.coverage" NAME="main Coverage Results" MODIFIED="1459311533485" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ScaleReader$main.coverage" NAME="main Coverage Results" MODIFIED="1459313751285" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/ScaleReader$numberrec.coverage" NAME="numberrec Coverage Results" MODIFIED="1459227659816" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="CreatePatchCommitExecutor">
@@ -29,21 +28,23 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file leaf-file-name="main.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2168">
-              <caret line="144" column="21" selection-start-line="144" selection-start-column="21" selection-end-line="144" selection-end-column="21" />
+            <state relative-caret-position="340">
+              <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
               <folding>
                 <element signature="e#0#33#0" expanded="true" />
                 <element signature="e#199#439#0" expanded="false" />
-                <marker date="1459311412406" expanded="false" signature="6148:6572" placeholder="..." />
+                <element signature="e#7649#8235#0" expanded="false" />
+                <element signature="e#8236#8821#0" expanded="false" />
+                <marker date="1459313751270" expanded="false" signature="6536:6960" placeholder="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="numberrec.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="numberrec.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/numberrec.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="204">
@@ -68,8 +69,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/main.py" />
         <option value="$PROJECT_DIR$/numberrec.py" />
+        <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
   </component>
@@ -448,7 +449,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="2" />
+      <option name="time" value="5" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -460,7 +461,9 @@
           <folding>
             <element signature="e#0#33#0" expanded="true" />
             <element signature="e#199#439#0" expanded="false" />
-            <marker date="1459311412406" expanded="false" signature="6148:6572" placeholder="..." />
+            <element signature="e#7649#8235#0" expanded="false" />
+            <element signature="e#8236#8821#0" expanded="false" />
+            <marker date="1459313751270" expanded="false" signature="6536:6960" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -480,7 +483,9 @@
           <folding>
             <element signature="e#0#33#0" expanded="true" />
             <element signature="e#199#439#0" expanded="false" />
-            <marker date="1459311412406" expanded="false" signature="6148:6572" placeholder="..." />
+            <element signature="e#7649#8235#0" expanded="false" />
+            <element signature="e#8236#8821#0" expanded="false" />
+            <marker date="1459313751270" expanded="false" signature="6536:6960" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -500,7 +505,9 @@
           <folding>
             <element signature="e#0#33#0" expanded="true" />
             <element signature="e#199#439#0" expanded="false" />
-            <marker date="1459311412406" expanded="false" signature="6148:6572" placeholder="..." />
+            <element signature="e#7649#8235#0" expanded="false" />
+            <element signature="e#8236#8821#0" expanded="false" />
+            <marker date="1459313751270" expanded="false" signature="6536:6960" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -512,19 +519,9 @@
           <folding>
             <element signature="e#0#33#0" expanded="true" />
             <element signature="e#199#439#0" expanded="false" />
-            <marker date="1459311412406" expanded="false" signature="6148:6572" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/main.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2168">
-          <caret line="144" column="21" selection-start-line="144" selection-start-column="21" selection-end-line="144" selection-end-column="21" />
-          <folding>
-            <element signature="e#0#33#0" expanded="true" />
-            <element signature="e#199#439#0" expanded="false" />
-            <marker date="1459311412406" expanded="false" signature="6148:6572" placeholder="..." />
+            <element signature="e#7649#8235#0" expanded="false" />
+            <element signature="e#8236#8821#0" expanded="false" />
+            <marker date="1459313751270" expanded="false" signature="6536:6960" placeholder="..." />
           </folding>
         </state>
       </provider>
@@ -534,6 +531,20 @@
         <state relative-caret-position="204">
           <caret line="12" column="60" selection-start-line="12" selection-start-column="60" selection-end-line="12" selection-end-column="60" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="29" column="16" selection-start-line="29" selection-start-column="16" selection-end-line="29" selection-end-column="16" />
+          <folding>
+            <element signature="e#0#33#0" expanded="true" />
+            <element signature="e#199#439#0" expanded="false" />
+            <element signature="e#7649#8235#0" expanded="false" />
+            <element signature="e#8236#8821#0" expanded="false" />
+            <marker date="1459313751270" expanded="false" signature="6536:6960" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>

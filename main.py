@@ -26,6 +26,8 @@ class ScaleReader:
 
             if self.init_image(frame):
                 self.recognize_number(self.number_frame)
+                print self.recognize_mode(self.mode_frame)
+                cv2.imshow("display", self.display)
 
             k = cv2.waitKey(self.wait)
             self.wait = 1
@@ -66,7 +68,7 @@ class ScaleReader:
 
         if screenCnt != None:
             cv2.drawContours(image, [screenCnt], -1, (0, 255, 0), 3)
-            cv2.imshow("Edged", image)
+            #cv2.imshow("Edged", image)
 
             pts = screenCnt.reshape(4, 2)
             rect = np.zeros((4, 2), dtype = "float32")
@@ -120,7 +122,8 @@ class ScaleReader:
                 self.display = athresholded.copy()
                 self.display = cv2.cvtColor(self.display, cv2.COLOR_GRAY2BGR)
                 cv2.imshow("Grayscale", self.athrimg)
-                self.wait = 0
+                # pause
+                #self.wait = 0
                 #cv2.imshow("THRES", self.thrimg)
 
                 # wait
@@ -129,7 +132,7 @@ class ScaleReader:
         return False
 
     def recognize_block(self, args, mark):
-        print args
+        #print args
         x0 = int(args[0] * self.screen_width)
         x1 = int(args[1] * self.screen_width)
         y0 = int(args[2] * self.screen_height)
@@ -157,19 +160,29 @@ class ScaleReader:
             bool_block.append([])
             for block_index in range(len(frames[index])):
                 bool_block[index].append(self.recognize_block(frames[index][block_index], True))
-        cv2.imshow("display", self.display)
         # recognize numbers
         result = 0
         for index in range(len(bool_block)):
             nr =  NumberRecognizer(bool_block[index])
             recognized_number = nr.recoginze()
             if recognized_number < 0:
-                print "Unkown number"
+                #print "Unkown number"
+                #break
+                a=0
             else:
                 result += recognized_number
                 result *= 10
         result /= 10
-        print result
+        return result
+
+    def recognize_mode(self, frames):
+        # recognize blocks
+        mode = ""
+        for key, value in frames.iteritems():
+            if(self.recognize_block(value, True)):
+                mode = key
+                break
+        return key
 
     def check_screen(self, width, height):
         if width != 0 and height != 0:
@@ -215,6 +228,15 @@ class ScaleReader:
                 [0.703389830508, 0.768361581921, 0.828793774319, 0.871595330739],
             ]
         ]
+        self.mode_frame = {
+            "Weight":[ 0.0785907859079 , 0.162601626016 , 0.172932330827 , 0.221804511278 ],
+            "Fat":[ 0.164705882353 , 0.335294117647 , 0.153526970954 , 0.203319502075 ],
+            "FatLevel":[ 0.397222222222 , 0.736111111111 , 0.175572519084 , 0.236641221374 ],
+            "Musule":[ 0.0777777777778 , 0.261111111111 , 0.250922509225 , 0.306273062731 ],
+            "BodyAge":[ 0.293296089385 , 0.424581005587 , 0.266666666667 , 0.307407407407 ],
+            "Calorie":[ 0.434131736527 , 0.640718562874 , 0.232365145228 , 0.298755186722 ],
+            "BMI":[ 0.657657657658 , 0.750750750751 , 0.242677824268 , 0.292887029289 ]
+        }
 
     def __init__(self):
         self.wait = 1;
