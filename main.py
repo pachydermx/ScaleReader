@@ -24,10 +24,15 @@ class ScaleReader:
             #frame = cv2.resize(frame, (720, 480))
             #cv2.imshow("Video Input", frame)
 
+            if frame == None:
+                break
+
             if self.init_image(frame):
-                self.recognize_number(self.number_frame)
-                print self.recognize_mode(self.mode_frame)
-                cv2.imshow("display", self.display)
+                value = self.recognize_number(self.number_frame)
+                mode = self.recognize_mode(self.mode_frame)
+                if len(mode) > 0:
+                    self.result[mode].append(value)
+                #cv2.imshow("display", self.display)
 
             k = cv2.waitKey(self.wait)
             self.wait = 1
@@ -107,21 +112,21 @@ class ScaleReader:
                 M = cv2.getPerspectiveTransform(rect, dst)
                 warp = cv2.warpPerspective(orig, M, (maxWidth, maxHeight))
 
-                cv2.imshow("Warp", warp)
+                #cv2.imshow("Warp", warp)
 
                 gray = cv2.cvtColor(warp, cv2.COLOR_BGR2GRAY)
                 gray = cv2.bilateralFilter(gray, 17, 17, 17)
 
                 athresholded = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY, 11, 2)
                 ret, thresholded = cv2.threshold(gray,60, 255, cv2.THRESH_BINARY)
-                cv2.namedWindow("Grayscale")
-                cv2.setMouseCallback("Grayscale", self.onMouseClick)
+                #cv2.namedWindow("Grayscale")
+                #cv2.setMouseCallback("Grayscale", self.onMouseClick)
 
                 self.athrimg = athresholded.copy()
                 self.thrimg = thresholded.copy()
                 self.display = athresholded.copy()
                 self.display = cv2.cvtColor(self.display, cv2.COLOR_GRAY2BGR)
-                cv2.imshow("Grayscale", self.athrimg)
+                #cv2.imshow("Grayscale", self.athrimg)
                 # pause
                 #self.wait = 0
                 #cv2.imshow("THRES", self.thrimg)
@@ -238,14 +243,30 @@ class ScaleReader:
             "BMI":[ 0.657657657658 , 0.750750750751 , 0.242677824268 , 0.292887029289 ]
         }
 
+    def init_collection(self):
+        self.result = {}
+        for key, value in self.mode_frame.iteritems():
+            self.result[key] = []
+
+    def get_result(self):
+        self.single_result = {}
+        for key, value in self.result.iteritems():
+            value.sort()
+            index = len(value) / 2
+            self.single_result[key] = value[index]
+        self.single_result["Calorie"] += 1000
+        self.single_result["Musule"] = float(self.single_result["Musule"]) / 10
+        self.single_result["Fat"] = float(self.single_result["Fat"]) / 10
+        self.single_result["BMI"] = float(self.single_result["BMI"]) / 10
+        self.single_result["Weight"] = float(self.single_result["Weight"]) / 10
+
     def __init__(self):
         self.wait = 1;
-        image = cv2.imread("test.jpg")
         self.init_frame()
+        self.init_collection()
         self.getImageFromVideo()
-        #self.getImageFromCamera(0)
-        #self.init_image(image)
-        #self.recognize_number(self.number_frame)
+        self.get_result()
+        print self.single_result
 
 
 sr = ScaleReader()
